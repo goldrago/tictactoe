@@ -1,8 +1,8 @@
 const boxs=document.querySelectorAll('.box');
 const statusTxt=document.querySelector('#status');
 const btnRestart=document.querySelector('#restart');
-let x="<img src='images/x.png'>";
-let o="<img src='images/o.png'>";
+let x="<img src='x.png'>";
+let o="<img src='o.png'>";
 
 const win=[
   [0,1,2],
