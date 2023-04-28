@@ -28,25 +28,82 @@ restartButton.addEventListener("click", restartGame);
 function cellClicked(event) {
   // Get the ID of the clicked cell
   var cellId = event.target.getAttribute("id");
-  
+
   // Check if the cell is already occupied
   if (board[cellId] !== "") {
     alert("This cell is already occupied. Please choose another cell.");
     return;
   }
-  
+
   // Update the board and the UI
   board[cellId] = player;
   event.target.textContent = player === 1 ? "X" : "O";
-  
+
   // Check if the game has ended
   if (checkForWin() || checkForTie()) {
     return;
   }
-  
+
   // Switch to the other player
   player = player === 1 ? 2 : 1;
-  
+
   // Update the status message
   var statusMessage = document.querySelector("#status");
-  statusMessage.textContent = "Player " +
+  statusMessage.textContent = "Player " + player + "'s turn";
+}
+
+// Function to check for a win
+function checkForWin() {
+  for (var i = 0; i < winningCombinations.length; i++) {
+    var a = winningCombinations[i][0];
+    var b = winningCombinations[i][1];
+    var c = winningCombinations[i][2];
+
+    if (board[a] !== "" && board[a] === board[b] && board[b] === board[c]) {
+      // Highlight the winning cells
+      highlightCells(a, b, c);
+
+      // Update the status message
+      var statusMessage = document.querySelector("#status");
+      statusMessage.textContent = "Player " + player + " wins!";
+
+      // Disable click events on the cells
+      for (var j = 0; j < cells.length; j++) {
+        cells[j].removeEventListener("click", cellClicked);
+      }
+
+      return true;
+    }
+  }
+
+  return false;
+}
+
+// Function to check for a tie
+function checkForTie() {
+  var tie = true;
+
+  for (var i = 0; i < board.length; i++) {
+    if (board[i] === "") {
+      tie = false;
+      break;
+    }
+  }
+
+  if (tie) {
+    // Update the status message
+    var statusMessage = document.querySelector("#status");
+    statusMessage.textContent = "It's a tie!";
+
+    return true;
+  }
+
+  return false;
+}
+
+// Function to restart the game
+function restartGame() {
+  // Clear the board and the UI
+  board = ["", "", "", "", "", "", "", "", ""];
+  for (var i = 0; i < cells.length; i++) {
+    cells[i].textContent
