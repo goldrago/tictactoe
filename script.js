@@ -1,109 +1,105 @@
-// Initialize variables
-var player = 1;
-var board = ["", "", "", "", "", "", "", "", ""];
-var winningCombinations = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6]
+// Create the game board
+var board = [
+  [null, null, null],
+  [null, null, null],
+  [null, null, null]
 ];
 
-// Get all the cells in the table
-var cells = document.querySelectorAll("td");
+// Create the player variables
+var player1 = "X";
+var player2 = "O";
+var currentPlayer = player1;
 
-// Add click event listeners to each cell
-for (var i = 0; i < cells.length; i++) {
-  cells[i].addEventListener("click", cellClicked);
+// Create the function to handle a mouse click on a board cell
+function cellClick(event) {
+  // Get the cell ID
+  var cellId = event.target.id;
+
+  // Check if the cell is empty
+  if (board[cellId / 3][cellId % 3] === null) {
+    // Set the cell value to the current player
+    board[cellId / 3][cellId % 3] = currentPlayer;
+
+    // Check if the current player has won
+    if (checkWin(currentPlayer)) {
+      // Display a win message
+      alert("Player " + currentPlayer + " has won!");
+
+      // Restart the game
+      restartGame();
+    } else if (isDraw()) {
+      // Display a draw message
+      alert("The game is a draw!");
+
+      // Restart the game
+      restartGame();
+    } else {
+      // Switch players
+      currentPlayer = (currentPlayer === player1) ? player2 : player1;
+    }
+  }
 }
 
-// Add click event listener to the restart button
-var restartButton = document.querySelector("#restart-btn");
-restartButton.addEventListener("click", restartGame);
-
-// Function to handle cell clicks
-function cellClicked(event) {
-  // Get the ID of the clicked cell
-  var cellId = event.target.getAttribute("id");
-
-  // Check if the cell is already occupied
-  if (board[cellId] !== "") {
-    alert("This cell is already occupied. Please choose another cell.");
-    return;
-  }
-
-  // Update the board and the UI
-  board[cellId] = player;
-  event.target.textContent = player === 1 ? "X" : "O";
-
-  // Check if the game has ended
-  if (checkForWin() || checkForTie()) {
-    return;
-  }
-
-  // Switch to the other player
-  player = player === 1 ? 2 : 1;
-
-  // Update the status message
-  var statusMessage = document.querySelector("#status");
-  statusMessage.textContent = "Player " + player + "'s turn";
-}
-
-// Function to check for a win
-function checkForWin() {
-  for (var i = 0; i < winningCombinations.length; i++) {
-    var a = winningCombinations[i][0];
-    var b = winningCombinations[i][1];
-    var c = winningCombinations[i][2];
-
-    if (board[a] !== "" && board[a] === board[b] && board[b] === board[c]) {
-      // Highlight the winning cells
-      highlightCells(a, b, c);
-
-      // Update the status message
-      var statusMessage = document.querySelector("#status");
-      statusMessage.textContent = "Player " + player + " wins!";
-
-      // Disable click events on the cells
-      for (var j = 0; j < cells.length; j++) {
-        cells[j].removeEventListener("click", cellClicked);
-      }
-
+// Create the function to check if a player has won
+function checkWin(player) {
+  // Check for a win in each row
+  for (var i = 0; i < 3; i++) {
+    if (board[i][0] === board[i][1] && board[i][1] === board[i][2] && board[i][0] === player) {
       return true;
     }
   }
 
-  return false;
-}
-
-// Function to check for a tie
-function checkForTie() {
-  var tie = true;
-
-  for (var i = 0; i < board.length; i++) {
-    if (board[i] === "") {
-      tie = false;
-      break;
+  // Check for a win in each column
+  for (var i = 0; i < 3; i++) {
+    if (board[0][i] === board[1][i] && board[1][i] === board[2][i] && board[0][i] === player) {
+      return true;
     }
   }
 
-  if (tie) {
-    // Update the status message
-    var statusMessage = document.querySelector("#status");
-    statusMessage.textContent = "It's a tie!";
-
+  // Check for a win in each diagonal
+  if (board[0][0] === board[1][1] && board[1][1] === board[2][2] && board[0][0] === player) {
     return true;
   }
 
+  if (board[0][2] === board[1][1] && board[1][1] === board[2][0] && board[0][2] === player) {
+    return true;
+  }
+
+  // No winner
   return false;
 }
 
-// Function to restart the game
+// Create the function to check if the game is a draw
+function isDraw() {
+  for (var i = 0; i < 3; i++) {
+    for (var j = 0; j < 3; j++) {
+      if (board[i][j] === null) {
+        return false;
+      }
+    }
+  }
+
+  // All cells are filled, so it's a draw
+  return true;
+}
+
+// Create the function to restart the game
 function restartGame() {
-  // Clear the board and the UI
-  board = ["", "", "", "", "", "", "", "", ""];
-  for (var i = 0; i < cells.length; i++) {
-    cells[i].textContent
+  // Clear the board
+  for (var i = 0; i < 3; i++) {
+    for (var j = 0; j < 3; j++) {
+      board[i][j] = null;
+    }
+  }
+
+  // Set the current player
+  currentPlayer = player1;
+}
+
+// Initialize the game
+window.onload = function() {
+  // Add event listeners to all the cells
+  for (var i = 0; i < 9; i++) {
+    document.getElementById(i + 1).addEventListener("click", cellClick);
+  }
+};
