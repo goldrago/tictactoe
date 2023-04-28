@@ -1,60 +1,61 @@
-<style>
-	/* CSS Code */
-	/* Heading */
-	h1 {
-		color: orangered;
-		font-size: 45px;
-	}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
 
-	/* 3*3 Grid */
-	#b1, #b2, #b3, #b4, #b5,
-	#b6, #b7, #b8, #b9 {
-		width: 80px;
-		height: 52px;
-		margin: auto;
-		border: 1px solid gray;
-		border-radius: 6px;
-		font-size: 30px;
-		text-align: center;
-	}
+body{
+  width: 100vw;
+  height: 100vh;
+  background-color: #2f3542;
+  color:white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 
-	/* Reset Button */
-	#but {
-		box-sizing: border-box;
-		width: 95px;
-		height: 40px;
-		border: 1px solid dodgerblue;
-		margin: auto;
-		border-radius: 4px;
-		font-family: Verdana,
-			Geneva, Tahoma, sans-serif;
+.container{
+  display: grid;
+  grid-template-columns: repeat(3,auto);
+}
 
-		background-color: dodgerblue;
-		color: white;
-		font-size: 20px;
-		cursor: pointer;
-	}
+.box{
+  width: 100px;
+  height: 100px;
+  border: 2px solid #eccc68;
+  box-shadow: 0 0 0 2px #eccc68;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  
+  font-size: 25px;
+}
 
-	/* Player turn space */
-	#print {
-		font-family: Verdana,
-			Geneva, Tahoma, sans-serif;
+#status{
+  padding: 20px;
+  font-size: 25px;
+  font-weight: 500;
+}
 
-		color: dodgerblue;
-		font-size: 20px;
-	}
+button{
+  width: 150px;
+  height: 40px;
+  font-size: 18px;
+  color:white;
+  background-color: #ff4757;
+  border: none;
+  border-radius: 3px;
+}
 
-	/* Main Container */
-	#main {
-		text-align: center;
-	}
+.win{
+    animation: winAnimation ease-in-out 1s infinite;
+}
 
-	/* Game Instruction Text */
-	#ins {
-		font-family: Verdana,
-			Geneva, Tahoma, sans-serif;
-			
-		color: dodgerblue;
-		font-size: 17px;
-	}
-</style>
+@keyframes winAnimation {
+  0%{background-color: #2c3a47;}
+  100%{background-color: #130f40;}
+  
+}
